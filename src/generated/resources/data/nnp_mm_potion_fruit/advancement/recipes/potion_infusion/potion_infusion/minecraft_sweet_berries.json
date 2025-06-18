@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_minecraft_sweet_berries": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:sweet_berries"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "nnp_mm_potion_fruit:potion_infusion/minecraft_sweet_berries"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_minecraft_sweet_berries"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "nnp_mm_potion_fruit:potion_infusion/minecraft_sweet_berries"
+    ]
+  }
+}

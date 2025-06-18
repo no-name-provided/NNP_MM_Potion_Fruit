@@ -1,11 +1,11 @@
 package com.github.no_name_provided.potion_apples.datagen.providers;
 
 import com.github.no_name_provided.potion_apples.common.recipes.InfuseFruit;
+import com.github.no_name_provided.potion_apples.datagen.builders.SpecialRecipeBuilderWithAdvancement;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -39,12 +39,13 @@ public class Recipes extends RecipeProvider {
     }
 
     void infuseFruit(Item fruit) {
-        SpecialRecipeBuilder.special((category) -> new InfuseFruit(category, Ingredient.of(fruit)))
+        SpecialRecipeBuilderWithAdvancement.special((category) -> new InfuseFruit(category, Ingredient.of(fruit)))
+                .unlockedBy("has_" + fruit.toString().replace(':','_'), has(fruit))
                 .save(
                         recipeOutput,
                         ResourceLocation.fromNamespaceAndPath(
                                 MOD_ID,
-                                "infuse_" + fruit.toString().replace(':','_')
+                                "potion_infusion/" + fruit.toString().replace(':','_')
                         )
                 );
     }
