@@ -1,0 +1,7 @@
+{
+  "type": "nnp_mm_potion_apples:infuse_apple",
+  "category": "misc",
+  "fruit": {
+    "item": "minecraft:apple"
+  }
+}
