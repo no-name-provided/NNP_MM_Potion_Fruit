@@ -1,6 +1,6 @@
 package com.github.no_name_provided.potion_apples;
 
-import com.github.no_name_provided.potion_apples.common.recipes.registries;
+import com.github.no_name_provided.potion_apples.common.recipes.Registry;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -15,7 +15,7 @@ import net.neoforged.fml.config.ModConfig;
     public NNPMMPotionFruit(IEventBus modEventBus, ModContainer modContainer) {
 
         // Register deferred registers
-        registries.init(modEventBus);
+        Registry.init(modEventBus);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC);

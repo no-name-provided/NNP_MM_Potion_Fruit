@@ -130,7 +130,7 @@ public class InfuseFruit extends CustomRecipe {
      * */
     @Override public
     @NotNull RecipeSerializer<?> getSerializer() {
-        return registries.INFUSE_FRUIT_SERIALIZER.get();
+        return Registry.INFUSE_FRUIT_SERIALIZER.get();
     }
 
     /**

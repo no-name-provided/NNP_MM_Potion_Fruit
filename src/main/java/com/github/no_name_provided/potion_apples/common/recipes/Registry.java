@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import static com.github.no_name_provided.potion_apples.NNPMMPotionFruit.MOD_ID;
 
-public class registries {
+public class Registry {
 
     static DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(
             BuiltInRegistries.RECIPE_SERIALIZER,

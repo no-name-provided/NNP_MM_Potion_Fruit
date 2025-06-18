@@ -28,19 +28,24 @@ public class Recipes extends RecipeProvider {
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
         this.recipeOutput = recipeOutput;
 
-        infuseFruit(APPLE, "infuse_apple");
-        infuseFruit(MELON_SLICE, "infuse_melon");
-        infuseFruit(BEETROOT, "infuse_beetroot");
-        infuseFruit(CHORUS_FRUIT, "infuse_chorus_fruit");
-        infuseFruit(PUMPKIN_PIE, "infuse_pumpkin_pie");
-        infuseFruit(GLOW_BERRIES, "infuse_glow_berries");
-        infuseFruit(SWEET_BERRIES, "infuse_sweet_berries");
-        infuseFruit(CARROT, "infuse_carrot");
-
+        infuseFruit(APPLE);
+        infuseFruit(MELON_SLICE);
+        infuseFruit(BEETROOT);
+        infuseFruit(CHORUS_FRUIT);
+        infuseFruit(PUMPKIN_PIE);
+        infuseFruit(GLOW_BERRIES);
+        infuseFruit(SWEET_BERRIES);
+        infuseFruit(CARROT);
     }
 
-    void infuseFruit(Item fruit, String id) {
+    void infuseFruit(Item fruit) {
         SpecialRecipeBuilder.special((category) -> new InfuseFruit(category, Ingredient.of(fruit)))
-                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(MOD_ID, id));
+                .save(
+                        recipeOutput,
+                        ResourceLocation.fromNamespaceAndPath(
+                                MOD_ID,
+                                "infuse_" + fruit.toString().replace(':','_')
+                        )
+                );
     }
 }
