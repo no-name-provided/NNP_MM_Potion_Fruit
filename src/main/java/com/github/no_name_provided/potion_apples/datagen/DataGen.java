@@ -11,7 +11,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.github.no_name_provided.potion_apples.NNPMMPotionApples.MOD_ID;
+import static com.github.no_name_provided.potion_apples.NNPMMPotionFruit.MOD_ID;
 
 @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGen{

@@ -12,15 +12,15 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(NNPMMPotionApples.MOD_ID) public class NNPMMPotionApples {
+@Mod(NNPMMPotionFruit.MOD_ID) public class NNPMMPotionFruit {
     // Define mod id in a common place for everything to reference
-    public static final String MOD_ID = "nnp_mm_potion_apples";
+    public static final String MOD_ID = "nnp_mm_potion_fruit";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
-    public NNPMMPotionApples(IEventBus modEventBus, ModContainer modContainer) {
+    public NNPMMPotionFruit(IEventBus modEventBus, ModContainer modContainer) {
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (NNPMMPotionApples) to respond directly to events.

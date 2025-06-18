@@ -1,13 +1,13 @@
 package com.github.no_name_provided.potion_apples.common.recipes;
 
-import com.github.no_name_provided.potion_apples.common.recipes.serializers.InfuseAppleSerializer;
+import com.github.no_name_provided.potion_apples.common.recipes.serializers.InfuseFruitSerializer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import static com.github.no_name_provided.potion_apples.NNPMMPotionApples.MOD_ID;
+import static com.github.no_name_provided.potion_apples.NNPMMPotionFruit.MOD_ID;
 
 public class registries {
 
@@ -16,10 +16,10 @@ public class registries {
             MOD_ID
             );
 
-    public static DeferredHolder<RecipeSerializer<?>, InfuseAppleSerializer> INFUSE_APPLE_SERIALIZER =
+    public static DeferredHolder<RecipeSerializer<?>, InfuseFruitSerializer> INFUSE_FRUIT_SERIALIZER =
             RECIPE_SERIALIZERS.register(
-                    "infuse_apple",
-                    InfuseAppleSerializer::new
+                    "infuse_fruit",
+                    InfuseFruitSerializer::new
             );
 
 

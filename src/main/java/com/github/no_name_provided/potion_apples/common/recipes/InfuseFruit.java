@@ -16,18 +16,22 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-public class InfuseApple extends CustomRecipe {
+public class InfuseFruit extends CustomRecipe {
 
     private final Ingredient fruit;
 
-    public InfuseApple(CraftingBookCategory category, Ingredient fruit) {
+    public InfuseFruit(CraftingBookCategory category, Ingredient fruit) {
         super(category);
         this.fruit = fruit;
     }
 
+    /**
+     * Does the recipe input match our recipe? Should we handle this craft?
+     * */
     @Override @ParametersAreNonnullByDefault
     public boolean matches(CraftingInput cInput, Level level) {
 
@@ -80,7 +84,8 @@ public class InfuseApple extends CustomRecipe {
                 .effects()
                 .forEach((pEffect) -> effects.add(pEffect.effect()));
 
-        ArrayList<Component> enchantDescriptions = new ArrayList<>();
+        // Use a set here to prevent duplicates.
+        HashSet<Component> enchantDescriptions = new HashSet<>();
         effects.forEach(effect -> enchantDescriptions.add(Component.translatable(effect.getDescriptionId())));
 
         FoodProperties oldProps = infusedFruit.getOrDefault(DataComponents.FOOD, new FoodProperties(
@@ -107,7 +112,7 @@ public class InfuseApple extends CustomRecipe {
 
         infusedFruit.set(DataComponents.FOOD, newPropsBuilder.build());
         infusedFruit.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
-        infusedFruit.set(DataComponents.LORE, new ItemLore(enchantDescriptions));
+        infusedFruit.set(DataComponents.LORE, new ItemLore(enchantDescriptions.stream().toList()));
 
         return infusedFruit;
     }
@@ -120,11 +125,17 @@ public class InfuseApple extends CustomRecipe {
         return width * height > 1;
     }
 
+    /**
+     * The codec set to use for saving, reading, & streaming.
+     * */
     @Override public
     @NotNull RecipeSerializer<?> getSerializer() {
-        return registries.INFUSE_APPLE_SERIALIZER.get();
+        return registries.INFUSE_FRUIT_SERIALIZER.get();
     }
 
+    /**
+     * Not necessary, but makes the serializer less finicky.
+     * */
     public Ingredient getFruit() {
         return fruit;
     }
