@@ -13,9 +13,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-/**Creates proper recipe advancements, so they'll show up in the recipe book.
+/**
+ * Creates proper recipe advancements, so they'll show up in the recipe book.
  * "Special" recipes aren't currently supported by the patched vanilla book, so we'll need probably need a mixin to make
- * these advancements actually work. Left in for now because there's no real downside.*/
+ * these advancements actually work. Left in for now because there's no real downside.
+ */
 public class SpecialRecipeBuilderWithAdvancement extends SpecialRecipeBuilder {
     private final Function<CraftingBookCategory, Recipe<?>> factory;
     private final Map<String, Criterion<?>> criteria;
