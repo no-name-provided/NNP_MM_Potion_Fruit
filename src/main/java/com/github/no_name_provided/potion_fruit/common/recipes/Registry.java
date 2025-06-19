@@ -22,7 +22,6 @@ public class Registry {
                     InfuseFruitSerializer::new
             );
 
-
     public static void init(IEventBus modEventBus) {
         RECIPE_SERIALIZERS.register(modEventBus);
     }

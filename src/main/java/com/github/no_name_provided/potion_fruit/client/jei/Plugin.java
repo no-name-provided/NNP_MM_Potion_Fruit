@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -24,19 +25,19 @@ public class Plugin implements IModPlugin {
      * The namespace should be your mod's modId.
      */
     @Override @ParametersAreNonnullByDefault
-    public ResourceLocation getPluginUid() {
+    public @NotNull ResourceLocation getPluginUid() {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, "jei_plugin");
     }
 
-    /**Register modded recipes.*/
+    /**
+     * Register modded recipes.
+     */
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
 
         IJeiHelpers jeiHelpers = registration.getJeiHelpers();
         Level level = Minecraft.getInstance().level;
         if (null != level) {
-            RecipeManager recipes = level.getRecipeManager();
-
             registration.addRecipes(RecipeTypes.CRAFTING, InfuseFruitMaker.createRecipes(jeiHelpers));
         } else {
             LogUtils.getLogger().debug("Level was null - " + MOD_ID + " noping out of JEI plugin.");

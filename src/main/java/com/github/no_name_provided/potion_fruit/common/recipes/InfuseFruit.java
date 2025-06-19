@@ -61,8 +61,9 @@ public class InfuseFruit extends CustomRecipe {
      */
     @Override @ParametersAreNonnullByDefault
     public @NotNull ItemStack getResultItem(HolderLookup.Provider registries) {
-
-        return fruit.getItems()[0];
+        ItemStack result = fruit.getItems()[0].copy();
+        result.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
+        return result;
     }
 
     /**

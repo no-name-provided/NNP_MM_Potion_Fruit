@@ -16,6 +16,7 @@ import net.neoforged.fml.config.ModConfig;
 
         // Register deferred registers
         Registry.init(modEventBus);
+        com.github.no_name_provided.potion_fruit.common.recipes.ingredients.types.Registry.init(modEventBus);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
