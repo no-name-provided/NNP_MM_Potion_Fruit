@@ -1,6 +1,6 @@
-package com.github.no_name_provided.potion_apples.common.recipes.serializers;
+package com.github.no_name_provided.potion_fruit.common.recipes.serializers;
 
-import com.github.no_name_provided.potion_apples.common.recipes.InfuseFruit;
+import com.github.no_name_provided.potion_fruit.common.recipes.InfuseFruit;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;

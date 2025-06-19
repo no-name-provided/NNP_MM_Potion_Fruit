@@ -1,4 +1,4 @@
-package com.github.no_name_provided.potion_apples.common.recipes;
+package com.github.no_name_provided.potion_fruit.common.recipes;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;

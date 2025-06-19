@@ -1,4 +1,4 @@
-package com.github.no_name_provided.potion_apples.datagen.builders;
+package com.github.no_name_provided.potion_fruit.datagen.builders;
 
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;

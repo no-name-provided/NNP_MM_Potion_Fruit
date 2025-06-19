@@ -1,30 +1,24 @@
-package com.github.no_name_provided.potion_apples.client.jei.RecipeMakers;
+package com.github.no_name_provided.potion_fruit.client.jei.RecipeMakers;
 
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
 import java.util.List;
-import java.util.stream.Stream;
 
-import static com.github.no_name_provided.potion_apples.NNPMMPotionFruit.MOD_ID;
+import static com.github.no_name_provided.potion_fruit.NNPMMPotionFruit.MOD_ID;
 
 public class InfuseFruitMaker {
     public static List<RecipeHolder<CraftingRecipe>> createRecipes(IJeiHelpers jeiHelpers) {
@@ -48,15 +42,14 @@ public class InfuseFruitMaker {
 
         List<RecipeHolder<?>> iRecipes = manager.getRecipes().stream().filter(recipe -> recipe.id().getPath().startsWith("potion_infusion/")).toList();
 
-        return potionRegistry.stream().map( potion -> generateRecipesForFruit(iRecipes, level, potion, jeiHelpers)
-        ).flatMap(List::stream).toList();
+        return generateRecipesForFruit(iRecipes, level, jeiHelpers);
 
 
     }
 
-    static List<RecipeHolder<CraftingRecipe>> generateRecipesForFruit(List<RecipeHolder<?>> iRecipes, ClientLevel level, Potion potion, IJeiHelpers jeiHelpers) {
+    static List<RecipeHolder<CraftingRecipe>> generateRecipesForFruit(List<RecipeHolder<?>> iRecipes, ClientLevel level, IJeiHelpers jeiHelpers) {
         IVanillaRecipeFactory vanillaRecipeFactory = jeiHelpers.getVanillaRecipeFactory();
-        ItemStack potionStack = PotionContents.createItemStack(Items.POTION, new Holder.Direct<>(potion));
+        ItemStack potionStack = PotionContents.createItemStack(Items.POTION, Potions.AWKWARD);
 
         RegistryAccess REGISTRY_ACCESS = level.registryAccess();
         return iRecipes.stream().map(
@@ -66,18 +59,13 @@ public class InfuseFruitMaker {
                             .group("infuse_fruit")
                             .pattern("P")
                             .pattern("F")
-                            .define('P', DataComponentIngredient.of(false, potionStack))
+                            .define('P', Ingredient.of(potionStack))
                             .define('F', Ingredient.of(fruit))
                             .build();
                     return new RecipeHolder<>(
                             ResourceLocation.fromNamespaceAndPath(
                                     holder.id().getNamespace(),
-                                    holder.id().getPath()
-                                            .replace(':','_') +
-                                            "-" +
-                                            potion.toString()
-                                                    .toLowerCase()
-                                                    .replace('@','-')
+                                    holder.id().getPath().replace(':','_')
                             ),
                             recipe
                     );

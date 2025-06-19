@@ -1,6 +1,6 @@
-package com.github.no_name_provided.potion_apples.datagen;
+package com.github.no_name_provided.potion_fruit.datagen;
 
-import com.github.no_name_provided.potion_apples.datagen.providers.Recipes;
+import com.github.no_name_provided.potion_fruit.datagen.providers.Recipes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -10,7 +10,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.github.no_name_provided.potion_apples.NNPMMPotionFruit.MOD_ID;
+import static com.github.no_name_provided.potion_fruit.NNPMMPotionFruit.MOD_ID;
 
 @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGen{

@@ -1,13 +1,13 @@
-package com.github.no_name_provided.potion_apples.common.recipes;
+package com.github.no_name_provided.potion_fruit.common.recipes;
 
-import com.github.no_name_provided.potion_apples.common.recipes.serializers.InfuseFruitSerializer;
+import com.github.no_name_provided.potion_fruit.common.recipes.serializers.InfuseFruitSerializer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import static com.github.no_name_provided.potion_apples.NNPMMPotionFruit.MOD_ID;
+import static com.github.no_name_provided.potion_fruit.NNPMMPotionFruit.MOD_ID;
 
 public class Registry {
 

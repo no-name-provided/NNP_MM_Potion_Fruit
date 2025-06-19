@@ -1,6 +1,6 @@
-package com.github.no_name_provided.potion_apples;
+package com.github.no_name_provided.potion_fruit;
 
-import com.github.no_name_provided.potion_apples.common.recipes.Registry;
+import com.github.no_name_provided.potion_fruit.common.recipes.Registry;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;

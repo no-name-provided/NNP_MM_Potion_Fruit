@@ -1,4 +1,4 @@
-package com.github.no_name_provided.potion_apples;
+package com.github.no_name_provided.potion_fruit;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
