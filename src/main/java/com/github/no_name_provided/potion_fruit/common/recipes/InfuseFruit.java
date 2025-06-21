@@ -80,11 +80,16 @@ public class InfuseFruit extends CustomRecipe {
     public @NotNull ItemStack assemble(CraftingInput cInput, HolderLookup.Provider registries) {
 
         Map<MobEffectInstance, Integer> colorMap = new HashMap<>();
+        Map<Component, Integer> loreMap = new HashMap<>();
 
         ItemStack potion = cInput.items().stream().filter(item -> item.getItem() != fruit.getItems()[0].getItem())
                 .toList().getFirst().copy();
         ItemStack infusedFruit = cInput.items().stream().filter(item -> item.getItem() == fruit.getItems()[0].getItem())
                 .toList().getFirst().copyWithCount(1);
+
+        infusedFruit.getOrDefault(DataComponents.LORE, ItemLore.EMPTY).styledLines().forEach( line ->
+                loreMap.putIfAbsent(line.plainCopy(), Objects.requireNonNull(line.getStyle().getColor()).getValue())
+        );
 
         PotionContents contents = potion.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
         ArrayList<MobEffectInstance> effects = new ArrayList<>();
@@ -100,7 +105,7 @@ public class InfuseFruit extends CustomRecipe {
                 .forEach(pEffect ->
                         {
                             effects.add(pEffect.effect());
-                            colorMap.putIfAbsent(pEffect.effect(), contents.getColor());
+                            colorMap.putIfAbsent(pEffect.effect(), loreMap.get(Component.translatable(pEffect.effect().getDescriptionId())));
                         }
                 );
 
@@ -109,7 +114,8 @@ public class InfuseFruit extends CustomRecipe {
         effects.forEach(
                 effect -> enchantDescriptions
                         .add(Component.translatable(
-                                effect.getDescriptionId()).withColor(colorMap.getOrDefault(effect, 0))
+                                        effect.getDescriptionId()
+                                ).withColor(colorMap.getOrDefault(effect, 0))
                         )
         );
 
