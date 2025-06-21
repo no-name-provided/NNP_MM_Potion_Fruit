@@ -1,5 +1,6 @@
 package com.github.no_name_provided.potion_fruit.client.jei.RecipeMakers;
 
+import com.github.no_name_provided.potion_fruit.common.annotations.OnlyIn;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import net.minecraft.client.Minecraft;
@@ -13,17 +14,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.*;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@OnlyIn()
 public class InfuseFruitMaker {
 
     public static List<RecipeHolder<CraftingRecipe>> createRecipes(IJeiHelpers jeiHelpers) {
@@ -36,22 +36,8 @@ public class InfuseFruitMaker {
         RegistryAccess REGISTRY_ACCESS = level.registryAccess();
 
         List<Ingredient> potions = new ArrayList<>();
-        List<Ingredient> potionsAlt = new ArrayList<>();
 
         Registry<Potion> potionRegistry = REGISTRY_ACCESS.registryOrThrow(BuiltInRegistries.POTION.key());
-        PotionBrewing potionBrewing = level.potionBrewing();
-
-        potionBrewing.potionMixes
-                .stream().filter(
-                        mix -> !mix.to().value().getEffects().isEmpty() &&
-                                !Potion.getName(Optional.of(Holder.direct(mix.to().value())), "").isEmpty() &&
-                                !Potion.getName(Optional.of(Holder.direct(mix.to().value())), "").startsWith("empty")
-                )
-                .forEach( mix -> potionsAlt.add(
-                        DataComponentIngredient.of(false, PotionContents.createItemStack(Items.POTION, mix.to()))
-                )
-        );
-
         potionRegistry.holders()
                 .filter(
                         // Getting the potion name is wierd. The second parameter is prepended, and the suffix is parsed from a path.
@@ -67,7 +53,6 @@ public class InfuseFruitMaker {
         
 
         RecipeManager manager = level.getRecipeManager();
-
         List<RecipeHolder<?>> iRecipes = manager.getRecipes().stream().filter(recipe -> recipe.id().getPath().startsWith("potion_infusion/")).toList();
 
         return generateRecipesForFruit(iRecipes, level, potions, jeiHelpers);
@@ -90,7 +75,6 @@ public class InfuseFruitMaker {
                             .pattern("P")
                             .pattern("F")
                             .define('P', new CompoundIngredient(potions).toVanilla())
-//                            .define('P', ArbitraryPotion.of().toVanilla())
                             .define('F', Ingredient.of(originalFruit))
                             .build();
                     return new RecipeHolder<>(

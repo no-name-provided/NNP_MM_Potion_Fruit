@@ -1,5 +1,6 @@
 package com.github.no_name_provided.potion_fruit.common.recipes;
 
+import com.github.no_name_provided.potion_fruit.Config;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -15,10 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class InfuseFruit extends CustomRecipe {
 
@@ -31,7 +29,7 @@ public class InfuseFruit extends CustomRecipe {
 
     /**
      * Does the recipe input match our recipe? Should we handle this craft?
-     * */
+     */
     @Override @ParametersAreNonnullByDefault
     public boolean matches(CraftingInput cInput, Level level) {
 
@@ -62,7 +60,16 @@ public class InfuseFruit extends CustomRecipe {
     @Override @ParametersAreNonnullByDefault
     public @NotNull ItemStack getResultItem(HolderLookup.Provider registries) {
         ItemStack result = fruit.getItems()[0].copy();
-        result.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
+        if (Config.addGlint) {
+            result.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
+        }
+        if (Config.addLore) {
+            result.set(DataComponents.LORE,
+                    new ItemLore(List.of(
+                            Component.translatable("craft_result.lore.nnp_mm_potion_fruit.infuse_fruit")
+                    )));
+        }
+
         return result;
     }
 
@@ -72,30 +79,47 @@ public class InfuseFruit extends CustomRecipe {
     @Override @ParametersAreNonnullByDefault
     public @NotNull ItemStack assemble(CraftingInput cInput, HolderLookup.Provider registries) {
 
+        Map<MobEffectInstance, Integer> colorMap = new HashMap<>();
+
         ItemStack potion = cInput.items().stream().filter(item -> item.getItem() != fruit.getItems()[0].getItem())
                 .toList().getFirst().copy();
         ItemStack infusedFruit = cInput.items().stream().filter(item -> item.getItem() == fruit.getItems()[0].getItem())
                 .toList().getFirst().copyWithCount(1);
 
+        PotionContents contents = potion.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
         ArrayList<MobEffectInstance> effects = new ArrayList<>();
-        potion.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
-                .getAllEffects()
-                .forEach(effects::add);
+        contents.getAllEffects()
+                .forEach(effect ->
+                        {
+                            effects.add(effect);
+                            colorMap.putIfAbsent(effect, contents.getColor());
+                        }
+                );
         infusedFruit.getOrDefault(DataComponents.FOOD, new FoodProperties.Builder().build())
                 .effects()
-                .forEach((pEffect) -> effects.add(pEffect.effect()));
+                .forEach(pEffect ->
+                        {
+                            effects.add(pEffect.effect());
+                            colorMap.putIfAbsent(pEffect.effect(), contents.getColor());
+                        }
+                );
 
         // Use a set here to prevent duplicates.
         HashSet<Component> enchantDescriptions = new HashSet<>();
-        effects.forEach(effect -> enchantDescriptions.add(Component.translatable(effect.getDescriptionId())));
+        effects.forEach(
+                effect -> enchantDescriptions
+                        .add(Component.translatable(
+                                effect.getDescriptionId()).withColor(colorMap.getOrDefault(effect, 0))
+                        )
+        );
 
         FoodProperties oldProps = infusedFruit.getOrDefault(DataComponents.FOOD, new FoodProperties(
-                0,
-                0,
-                true,
-                1,
-                Optional.empty(),
-                List.of()
+                        0,
+                        0,
+                        true,
+                        1,
+                        Optional.empty(),
+                        List.of()
                 )
         );
 
@@ -112,8 +136,12 @@ public class InfuseFruit extends CustomRecipe {
         );
 
         infusedFruit.set(DataComponents.FOOD, newPropsBuilder.build());
-        infusedFruit.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
-        infusedFruit.set(DataComponents.LORE, new ItemLore(enchantDescriptions.stream().toList()));
+        if (Config.addGlint) {
+            infusedFruit.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
+        }
+        if (Config.addLore) {
+            infusedFruit.set(DataComponents.LORE, new ItemLore(enchantDescriptions.stream().toList()));
+        }
 
         return infusedFruit;
     }
@@ -128,7 +156,7 @@ public class InfuseFruit extends CustomRecipe {
 
     /**
      * The codec set to use for saving, reading, & streaming.
-     * */
+     */
     @Override public
     @NotNull RecipeSerializer<?> getSerializer() {
         return Registry.INFUSE_FRUIT_SERIALIZER.get();
@@ -136,7 +164,7 @@ public class InfuseFruit extends CustomRecipe {
 
     /**
      * Not necessary, but makes the serializer less finicky.
-     * */
+     */
     public Ingredient getFruit() {
         return fruit;
     }

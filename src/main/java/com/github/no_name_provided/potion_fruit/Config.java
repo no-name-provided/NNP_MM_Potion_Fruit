@@ -9,10 +9,17 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
+    private static final ModConfigSpec.BooleanValue ADD_LORE = BUILDER.comment("Add lore (tooltip) to potion fruit?").define("add_lore", true);
+    private static final ModConfigSpec.BooleanValue ADD_GLINT = BUILDER.comment("Add glint effect to potion fruit?").define("add_glint", true);
+
     static final ModConfigSpec SPEC = BUILDER.build();
+
+    public static boolean addLore;
+    public static boolean addGlint;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent.Loading event) {
-
+        addLore = ADD_LORE.get();
+        addGlint = ADD_GLINT.get();
     }
 }

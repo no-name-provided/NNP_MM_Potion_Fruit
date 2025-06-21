@@ -1,6 +1,7 @@
 package com.github.no_name_provided.potion_fruit.client.jei;
 
 import com.github.no_name_provided.potion_fruit.client.jei.RecipeMakers.InfuseFruitMaker;
+import com.github.no_name_provided.potion_fruit.common.annotations.OnlyIn;
 import com.mojang.logging.LogUtils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -9,7 +10,6 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +17,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import static com.github.no_name_provided.potion_fruit.NNPMMPotionFruit.MOD_ID;
 
-@JeiPlugin
+@OnlyIn() @JeiPlugin
 public class Plugin implements IModPlugin {
 
     /**
