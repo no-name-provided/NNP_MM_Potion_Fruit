@@ -23,7 +23,8 @@ repositories {
 }
 
 base {
-    archivesName = mod_id
+    // Sets the beginning of the compiled binary name
+    archivesName = mod_id + "-" + minecraft_version + "- NEOFORGE"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
