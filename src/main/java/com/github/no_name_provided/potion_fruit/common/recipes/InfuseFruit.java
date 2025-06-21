@@ -88,7 +88,7 @@ public class InfuseFruit extends CustomRecipe {
                 .toList().getFirst().copyWithCount(1);
 
         infusedFruit.getOrDefault(DataComponents.LORE, ItemLore.EMPTY).styledLines().forEach( line ->
-                loreMap.putIfAbsent(line.plainCopy(), Objects.requireNonNull(line.getStyle().getColor()).getValue())
+                loreMap.putIfAbsent(line.plainCopy(), null != line.getStyle().getColor() ? line.getStyle().getColor().getValue() : 0)
         );
 
         PotionContents contents = potion.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
