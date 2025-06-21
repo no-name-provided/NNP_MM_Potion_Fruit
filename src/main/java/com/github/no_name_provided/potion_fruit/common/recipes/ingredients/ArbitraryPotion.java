@@ -13,6 +13,9 @@ import java.util.stream.Stream;
 
 import static com.github.no_name_provided.potion_fruit.common.recipes.ingredients.types.Registry.ARBITRARY_POTION;
 
+/**An attempt to make JEI accept any potion as an ingredient. Unfortunately, it still insists on matching
+ * something (likely a registry lookup of potion contents). For this reason, this ingredient is unused and will likely
+ * be deprecated.*/
 public class ArbitraryPotion implements ICustomIngredient {
 
     /**
