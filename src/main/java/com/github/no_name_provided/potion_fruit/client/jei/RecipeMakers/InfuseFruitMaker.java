@@ -13,9 +13,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.*;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,20 +36,35 @@ public class InfuseFruitMaker {
         RegistryAccess REGISTRY_ACCESS = level.registryAccess();
 
         List<Ingredient> potions = new ArrayList<>();
+        List<Ingredient> potionsAlt = new ArrayList<>();
 
         Registry<Potion> potionRegistry = REGISTRY_ACCESS.registryOrThrow(BuiltInRegistries.POTION.key());
-        potionRegistry
+        PotionBrewing potionBrewing = level.potionBrewing();
+
+        potionBrewing.potionMixes
                 .stream().filter(
+                        mix -> !mix.to().value().getEffects().isEmpty() &&
+                                !Potion.getName(Optional.of(Holder.direct(mix.to().value())), "").isEmpty() &&
+                                !Potion.getName(Optional.of(Holder.direct(mix.to().value())), "").startsWith("empty")
+                )
+                .forEach( mix -> potionsAlt.add(
+                        DataComponentIngredient.of(false, PotionContents.createItemStack(Items.POTION, mix.to()))
+                )
+        );
+
+        potionRegistry.holders()
+                .filter(
                         // Getting the potion name is wierd. The second parameter is prepended, and the suffix is parsed from a path.
                         // Filtering out any paths that can't be parsed (and any potions without effects) seems to remove uncraftables.
-                        potion -> !potion.getEffects().isEmpty() &&
-                                !Potion.getName(Optional.of(Holder.direct(potion)), "").isEmpty() &&
-                                !Potion.getName(Optional.of(Holder.direct(potion)), "").startsWith("empty")
+                        holder -> !holder.value().getEffects().isEmpty() &&
+                                !Potion.getName(Optional.of(Holder.direct(holder.value())), "").isEmpty() &&
+                                !Potion.getName(Optional.of(Holder.direct(holder.value())), "").startsWith("empty")
                 ).forEach(
-                        potion -> potions.add(
-                                Ingredient.of(PotionContents.createItemStack(Items.POTION, new Holder.Direct<>(potion)))
+                        holder -> potions.add(
+                                DataComponentIngredient.of(false, PotionContents.createItemStack(Items.POTION, holder))
                         )
                 );
+        
 
         RecipeManager manager = level.getRecipeManager();
 
