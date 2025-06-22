@@ -79,45 +79,21 @@ public class InfuseFruit extends CustomRecipe {
     @Override @ParametersAreNonnullByDefault
     public @NotNull ItemStack assemble(CraftingInput cInput, HolderLookup.Provider registries) {
 
-        Map<MobEffectInstance, Integer> colorMap = new HashMap<>();
-        Map<Component, Integer> loreMap = new HashMap<>();
-
         ItemStack potion = cInput.items().stream().filter(item -> item.getItem() != fruit.getItems()[0].getItem())
-                .toList().getFirst().copy();
+                .toList().getFirst().copyWithCount(1);
         ItemStack infusedFruit = cInput.items().stream().filter(item -> item.getItem() == fruit.getItems()[0].getItem())
                 .toList().getFirst().copyWithCount(1);
 
-        infusedFruit.getOrDefault(DataComponents.LORE, ItemLore.EMPTY).styledLines().forEach( line ->
-                loreMap.putIfAbsent(line.plainCopy(), null != line.getStyle().getColor() ? line.getStyle().getColor().getValue() : 0)
-        );
-
         PotionContents contents = potion.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
-        ArrayList<MobEffectInstance> effects = new ArrayList<>();
+        Effects effects = new Effects();
         contents.getAllEffects()
-                .forEach(effect ->
-                        {
-                            effects.add(effect);
-                            colorMap.putIfAbsent(effect, contents.getColor());
-                        }
+                .forEach(effects::add
                 );
         infusedFruit.getOrDefault(DataComponents.FOOD, new FoodProperties.Builder().build())
                 .effects()
                 .forEach(pEffect ->
-                        {
-                            effects.add(pEffect.effect());
-                            colorMap.putIfAbsent(pEffect.effect(), loreMap.get(Component.translatable(pEffect.effect().getDescriptionId())));
-                        }
+                        effects.add(pEffect.effect())
                 );
-
-        // Use a set here to prevent duplicates.
-        HashSet<Component> enchantDescriptions = new HashSet<>();
-        effects.forEach(
-                effect -> enchantDescriptions
-                        .add(Component.translatable(
-                                        effect.getDescriptionId()
-                                ).withColor(colorMap.getOrDefault(effect, 0))
-                        )
-        );
 
         FoodProperties oldProps = infusedFruit.getOrDefault(DataComponents.FOOD, new FoodProperties(
                         0,
@@ -137,7 +113,7 @@ public class InfuseFruit extends CustomRecipe {
 
         // It's this or an unchecked assignment - the class it's looking for is an abstract generic.
         //noinspection deprecation
-        effects.forEach(
+        effects.get().forEach(
                 effect -> newPropsBuilder.effect(effect, 1.0f)
         );
 
@@ -146,10 +122,48 @@ public class InfuseFruit extends CustomRecipe {
             infusedFruit.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
         }
         if (Config.addLore) {
-            infusedFruit.set(DataComponents.LORE, new ItemLore(enchantDescriptions.stream().toList()));
+            List<Component> lore = new ArrayList<>();
+            PotionContents.addPotionTooltip(effects.get(), lore::add, 1.0f, 20);
+            infusedFruit.set(DataComponents.LORE, new ItemLore(lore));
         }
 
         return infusedFruit;
+    }
+
+    /**
+     * This class exists to wrap the #add method in ArrayList and filter out redundant effects.
+     */
+    private static class Effects {
+        private final ArrayList<MobEffectInstance> effects = new ArrayList<>();
+
+        /**
+         * Checks for duplicates and ensures only the dominant effect is added.
+         * Makes no difference mechanically, but filters bad information out of tooltips.
+         */
+        public void add(MobEffectInstance newEffect) {
+            // It's either this or dealing with a possible null value in the tagkey. That feels less clean.
+            @SuppressWarnings("deprecation")
+            List<MobEffectInstance> oldEffects = effects.stream().filter(
+                    effect -> effect.getEffect().is(newEffect.getEffect())
+            ).toList();
+
+            if (oldEffects.isEmpty()) {
+                effects.add(newEffect);
+            } else {
+                // There should never be more than one effect of the same type...
+                MobEffectInstance oldEffect = oldEffects.getFirst();
+
+                if (oldEffect.getAmplifier() < newEffect.getAmplifier()) {
+                    effects.replaceAll((effect) -> effect.equals(oldEffect) ? newEffect : effect);
+                } else if (oldEffect.getAmplifier() == newEffect.getAmplifier() && oldEffect.getDuration() < newEffect.getDuration()) {
+                    effects.replaceAll((effect) -> effect.equals(oldEffect) ? newEffect : effect);
+                }
+            }
+        }
+
+        public ArrayList<MobEffectInstance> get() {
+            return effects;
+        }
     }
 
     /**
