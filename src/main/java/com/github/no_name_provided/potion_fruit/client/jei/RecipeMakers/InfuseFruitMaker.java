@@ -5,7 +5,6 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
@@ -43,8 +42,8 @@ public class InfuseFruitMaker {
                         // Getting the potion name is wierd. The second parameter is prepended, and the suffix is parsed from a path.
                         // Filtering out any paths that can't be parsed (and any potions without effects) seems to remove uncraftables.
                         holder -> !holder.value().getEffects().isEmpty() &&
-                                !Potion.getName(Optional.of(Holder.direct(holder.value())), "").isEmpty() &&
-                                !Potion.getName(Optional.of(Holder.direct(holder.value())), "").startsWith("empty")
+                                !Potion.getName(Optional.of(holder), "").isEmpty() &&
+                                !Potion.getName(Optional.of(holder), "").startsWith("empty")
                 ).forEach(
                         holder -> potions.add(
                                 DataComponentIngredient.of(false, PotionContents.createItemStack(Items.POTION, holder))
