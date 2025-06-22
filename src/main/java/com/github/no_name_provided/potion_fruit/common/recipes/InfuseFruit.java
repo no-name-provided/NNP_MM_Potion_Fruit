@@ -18,6 +18,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import java.util.*;
 
+import static net.minecraft.SharedConstants.TICKS_PER_SECOND;
+
 public class InfuseFruit extends CustomRecipe {
 
     private final Ingredient fruit;
@@ -123,7 +125,11 @@ public class InfuseFruit extends CustomRecipe {
         }
         if (Config.addLore) {
             List<Component> lore = new ArrayList<>();
-            PotionContents.addPotionTooltip(effects.get(), lore::add, 1.0f, 20);
+            // In vanilla, ticks per second appears to target a hardcoded value in an interface. This happens to be
+            // the same as the shared TICKS_PER_SECOND constant, so I'm using that. It does not seem to reference
+            // the actual tick rate, which can be changed from this default. Doing this without a level reference would
+            // require siloed code.
+            PotionContents.addPotionTooltip(effects.get(), lore::add, 1.0f, TICKS_PER_SECOND);
             infusedFruit.set(DataComponents.LORE, new ItemLore(lore));
         }
 
