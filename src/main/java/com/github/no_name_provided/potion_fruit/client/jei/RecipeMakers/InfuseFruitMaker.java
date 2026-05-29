@@ -1,5 +1,6 @@
 package com.github.no_name_provided.potion_fruit.client.jei.RecipeMakers;
 
+import com.github.no_name_provided.potion_fruit.Config;
 import com.github.no_name_provided.potion_fruit.common.annotations.OnlyIn;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
@@ -10,6 +11,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -69,6 +72,10 @@ public class InfuseFruitMaker {
                     ItemStack fruit = holder.value().getFruit().getValues().get(0).value().getDefaultInstance();
                     ItemStack originalFruit = fruit.copy();
                     originalFruit.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, false);
+                    fruit.set(DataComponents.LORE, new ItemLore(List.of(Component.literal("Infused with potion effect!"))));
+                    if (Config.addGlint) {
+                        fruit.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
+                    }
                     
                     CraftingRecipe recipe = vanillaRecipeFactory.createShapedRecipeBuilder(
                                     CraftingBookCategory.MISC, new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(fruit))
