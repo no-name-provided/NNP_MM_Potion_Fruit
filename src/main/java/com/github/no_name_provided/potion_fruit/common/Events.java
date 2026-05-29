@@ -11,5 +11,6 @@ public class Events {
     @SubscribeEvent
     private static void onDataPackSync(OnDatapackSyncEvent event) {
         event.sendRecipes(RecipeType.CRAFTING);
+        event.getRecipeTypesToSend();
     }
 }
