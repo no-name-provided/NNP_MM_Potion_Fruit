@@ -1,7 +1,6 @@
 {
   "type": "nnp_mm_potion_fruit:infuse_fruit",
-  "category": "misc",
-  "fruit": {
-    "item": "minecraft:pumpkin_pie"
+  "recipe": {
+    "fruit": "minecraft:pumpkin_pie"
   }
 }

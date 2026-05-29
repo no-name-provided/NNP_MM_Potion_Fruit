@@ -1,7 +1,6 @@
 {
   "type": "nnp_mm_potion_fruit:infuse_fruit",
-  "category": "misc",
-  "fruit": {
-    "item": "minecraft:beetroot"
+  "recipe": {
+    "fruit": "minecraft:beetroot"
   }
 }

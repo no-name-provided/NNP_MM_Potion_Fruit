@@ -16,10 +16,10 @@ public class Registry {
             MOD_ID
             );
 
-    public static DeferredHolder<RecipeSerializer<?>, InfuseFruitSerializer> INFUSE_FRUIT_SERIALIZER =
+    public static DeferredHolder<RecipeSerializer<?>, RecipeSerializer<InfuseFruit>> INFUSE_FRUIT_SERIALIZER =
             RECIPE_SERIALIZERS.register(
                     "infuse_fruit",
-                    InfuseFruitSerializer::new
+                    InfuseFruitSerializer::getSerializer
             );
 
     public static void init(IEventBus modEventBus) {

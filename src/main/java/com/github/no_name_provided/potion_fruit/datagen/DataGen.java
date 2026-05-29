@@ -12,15 +12,15 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.github.no_name_provided.potion_fruit.NNPMMPotionFruit.MOD_ID;
 
-@EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MOD_ID)
 public class DataGen{
     @SubscribeEvent
-    public static void onGatherData(GatherDataEvent event) {
+    public static void onGatherData(GatherDataEvent.Client event) {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new Recipes(packOutput, lookupProvider));
+        generator.addProvider(true, new Recipes.Runner(packOutput, lookupProvider));
 
     }
 }
