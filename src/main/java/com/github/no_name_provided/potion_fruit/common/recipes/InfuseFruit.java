@@ -99,7 +99,16 @@ public class InfuseFruit extends CustomRecipe {
                 .soundAfterConsume(oldConsumable.sound())
                 .onConsume(effects.get());
         // This method adds effects (rather than overwriting them, as is usually the case with builders in this codebase)
-        oldConsumable.onConsumeEffects().forEach(newConsumableBuilder::onConsume);
+        oldConsumable.onConsumeEffects().forEach(consumeEffect -> {
+                    if (consumeEffect instanceof ApplyStatusEffectsConsumeEffect mobEffect) {
+                        // Running these through our subclass removes duplicates and adds tooltips
+                        effects.addAll(mobEffect.effects());
+                    } else {
+                        // We may want to special case these later - for now, they quietly carry over
+                        newConsumableBuilder.onConsume(consumeEffect);
+                    }
+                }
+        );
         infusedFruit.set(DataComponents.CONSUMABLE, newConsumableBuilder.build());
         
         FoodProperties oldProps = infusedFruit.getOrDefault(DataComponents.FOOD, new FoodProperties(
@@ -159,6 +168,10 @@ public class InfuseFruit extends CustomRecipe {
                     effects.replaceAll((effect) -> effect.equals(oldEffect) ? newEffect : effect);
                 }
             }
+        }
+        
+        public void addAll(List<MobEffectInstance> newEffects) {
+            newEffects.forEach(this::add);
         }
         
         public ArrayList<MobEffectInstance> getRaw() {

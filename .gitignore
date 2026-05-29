@@ -117,3 +117,4 @@ runs/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+/src/generated/resources/.cache/f86d9646fb6645aa0772cf13fd3fcfb1a388b362
