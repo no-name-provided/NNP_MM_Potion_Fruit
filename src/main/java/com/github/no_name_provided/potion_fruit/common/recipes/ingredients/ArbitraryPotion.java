@@ -1,5 +1,6 @@
 package com.github.no_name_provided.potion_fruit.common.recipes.ingredients;
 
+import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
@@ -10,20 +11,22 @@ import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.neoforged.neoforge.common.crafting.CustomDisplayIngredient;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.stream.Stream;
 
 import static com.github.no_name_provided.potion_fruit.common.recipes.ingredients.types.Registry.ARBITRARY_POTION;
 
-/**An attempt to make JEI accept any potion as an ingredient. Unfortunately, it still insists on matching
- * something (likely a registry lookup of potion contents). For this reason, this ingredient is unused and will likely
- * be deprecated.*/
+/**
+ * An attempt to make JEI accept any potion as an ingredient. Unfortunately, it still insists on matching something
+ * (likely a registry lookup of potion contents). For this reason, this ingredient is unused and will likely be
+ * deprecated.
+ */
+@ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
 public class ArbitraryPotion implements ICustomIngredient {
-
+    
     /**
-     * Checks if a stack matches this ingredient.
-     * The stack <b>must not</b> be modified in any way.
+     * Checks if a stack matches this ingredient. The stack <b>must not</b> be modified in any way.
      *
      * @param stack the stack to test
      * @return {@code true} if the stack matches this ingredient, {@code false} otherwise
@@ -52,6 +55,7 @@ public class ArbitraryPotion implements ICustomIngredient {
     @Override
     public Stream<Holder<Item>> items() {
         
+        //noinspection deprecation - this class is deprecated
         return Stream.of(Items.POTION.builtInRegistryHolder());
     }
     
@@ -60,7 +64,7 @@ public class ArbitraryPotion implements ICustomIngredient {
         
         return new ArbitraryPotion();
     }
-
+    
     /**
      * Returns whether this ingredient always requires {@linkplain #test direct stack testing}.
      *
@@ -72,12 +76,12 @@ public class ArbitraryPotion implements ICustomIngredient {
         
         return false;
     }
-
+    
     /**
      * {@return the type of this ingredient}
      */
     @Override
-    public @NotNull IngredientType<?> getType() {
+    public IngredientType<?> getType() {
         
         return ARBITRARY_POTION.get();
     }
@@ -86,8 +90,7 @@ public class ArbitraryPotion implements ICustomIngredient {
      * Returns the display for this ingredient.
      *
      * <p>The display is synced to the client, and is also used to retrieve the {@link ItemStack}s that are shown to
-     * the
-     * client.
+     * the client.
      *
      * @implNote The default implementation just constructs a list of stacks from {@link #items()}. This is generally
      * suitable for {@link #isSimple() simple} ingredients. Non-simple ingredients can either override this method to
@@ -98,15 +101,6 @@ public class ArbitraryPotion implements ICustomIngredient {
     public SlotDisplay display() {
         
         return ICustomIngredient.super.display();
-    }
-    
-    /**
-     * {@return a new {@link Ingredient} behaving as defined by this custom ingredient}
-     */
-    @Override
-    public Ingredient toVanilla() {
-        
-        return ICustomIngredient.super.toVanilla();
     }
     
     public static final MapCodec<ArbitraryPotion> CODEC = MapCodec.unit(ArbitraryPotion::new);

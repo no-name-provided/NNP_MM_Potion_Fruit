@@ -13,14 +13,17 @@ import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static net.minecraft.SharedConstants.TICKS_PER_SECOND;
 
@@ -58,25 +61,6 @@ public class InfuseFruit extends CustomRecipe {
         
         return !(orderedInputs.getFirst().isEmpty() || orderedInputs.getLast().isEmpty());
     }
-
-//    /**
-//     * Used by recipe book/JEI. Output shouldn't be modified.
-//     */
-//    @Override @ParametersAreNonnullByDefault
-//    public @NotNull ItemStack getResultItem(HolderLookup.Provider registries) {
-//        ItemStack result = fruit.getItems()[0].copy();
-//        if (Config.addGlint) {
-//            result.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
-//        }
-//        if (Config.addLore) {
-//            result.set(DataComponents.LORE,
-//                    new ItemLore(List.of(
-//                            Component.translatable("craft_result.lore.nnp_mm_potion_fruit.infuse_fruit")
-//                    )));
-//        }
-//
-//        return result;
-//    }
     
     /**
      * Return actual output item - which may be a copy of the result.

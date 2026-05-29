@@ -24,8 +24,9 @@ public class ClientEvents {
         INFUSION_RECIPES.clear();
         
         // Then store the recipes you want
+        //noinspection unchecked - we're filtering out every recipe that can't be cast
         INFUSION_RECIPES.addAll(event.getRecipeMap().values().stream().filter(holder ->
-                        holder.id().identifier().getPath().startsWith("potion_infusion/")
+                        holder.value() instanceof InfuseFruit
                 ).map(holder -> (RecipeHolder<InfuseFruit>) holder).toList()
         );
     }

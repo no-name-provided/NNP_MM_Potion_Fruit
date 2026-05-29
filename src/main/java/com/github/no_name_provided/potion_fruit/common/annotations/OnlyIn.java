@@ -4,6 +4,10 @@ import net.neoforged.api.distmarker.Dist;
 
 import java.lang.annotation.*;
 
+/**
+ * Alternative to the NeoForge annotation; documentary only. When used correctly, there should be
+ * no difference.
+ */
 @Documented
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.PACKAGE})
 @Retention(RetentionPolicy.RUNTIME)
